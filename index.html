@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+	<html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+		<title>Wikispeaks</title>
+    <link href='style.css' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+    <header role='banner'>
+      <h1>WikispeakS</h1>
+      <h2>Wikipedia article dictation</h2>
+    </header>
+    <main role='main'>
+      <section class='search'>
+        <label for='input'>Search Wikipedia</label>
+            <form action='#' class='search-form'>
+              <input type='text' class='search-input' id='input' /><span class='input-group-button'>
+                <button type='submit' class='button search-button'></button>
+              </span>
+            </form>
+      </section>
+      <section class='disambig'></section>
+      <section class='extract-results'>Contents</section>
+      <section class='media-player'>
+        <audio>
+          <source class="track" src="" type="audio/mpeg">
+        </audio>
+      </section>
+    </main>
+    <footer role='contentinfo'>About</footer>
+	  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+    <script type='text/javascript' src='config.js'></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.132.0.min.js"></script>
+    <script src='script.js'></script>
+	</body>
+	</html>	<!DOCTYPE html>
