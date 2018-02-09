@@ -40,6 +40,7 @@ function pullTextHeadings(extractStr) {
   headersArr.splice(0, 0, 'Introduction');
   headersArr.splice(-3);
   console.log(headersArr);
+  renderHeaderLinks(headersArr);
 }
 
 // Add subheadings to an array
@@ -57,21 +58,22 @@ function pullTextSubheadings(extractStr) {
 
 // Add text strings as object values
 
-/*
 // Render headings as links
 function renderHeaderLinks(headersArr) {
   console.log('renderHeaderLinks ran');
-  headersArr.map((item, index) => $('.contents.links').html(`
-      <li>${item[index]}</li>
+  headersArr.map((item, index) =>
+    $('.contents-links').html(`
+      <li>${item}</li>
     `)
   );
+}
+
 /*
-  headersArr.map(
-  $('.extract-results').html(`
-      <li>${headersArr[0]}</li>
-    `)
-  );
-  */
+  for (let i = 0; i < headersArr.length; i++) {
+    $('.contents-links').html(`
+      <li>${headersArr[i]}</li>
+    `)};
+ */ 
 
 //let article = $(headers[0]).child();
 //console.log(article);
