@@ -1,5 +1,6 @@
 let extractStr = '';
 let headersArr = [];
+let articleObj = {};
 let subheadersArr = [];
 
 //Render page
@@ -61,22 +62,16 @@ function pullTextSubheadings(extractStr) {
 // Render headings as links
 function renderHeaderLinks(headersArr) {
   console.log('renderHeaderLinks ran');
-  headersArr.map((item, index) =>
-    $('.contents-links').html(`
+  headersArr.forEach(item => {
+    console.log(item);
+    $('.contents-links').append(`
       <li>${item}</li>
-    `)
+    `)}
   );
 }
 
-/*
-  for (let i = 0; i < headersArr.length; i++) {
-    $('.contents-links').html(`
-      <li>${headersArr[i]}</li>
-    `)};
- */ 
-
-//let article = $(headers[0]).child();
-//console.log(article);
+//articleObj = $(headersArr[0]).child();
+//console.log(articleObj);
 
 // TO DO
 // Render a stop button (pass '' string to polly)
