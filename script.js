@@ -1,7 +1,4 @@
-let extractStr = '';
 let headersArr = [];
-let articleObj = {};
-let subheadersArr = [];
 
 //Render page
 
@@ -15,6 +12,7 @@ function getDataFromWikiApi(searchTerm) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
       renderJSON(extractStr);
+      splitExtractStr(extractStr);
     }
   };
   $.ajax(query);
@@ -27,7 +25,6 @@ function renderJSON(extractStr) {
     <p>${extractStr}</p>
     `);
   pullTextHeadings(extractStr);
-  pullTextSubheadings(extractStr);
 }
 
 // Add headings to an array
@@ -39,25 +36,42 @@ function pullTextHeadings(extractStr) {
     headersArr.push(headers[i].textContent);
   };
   headersArr.splice(0, 0, 'Introduction');
-  headersArr.splice(-3);
+
+  // ----- attempt to splice unwanted values
+  /*
+  for(let i = 0; i < headersArr.length; i++) {
+    if(headersArr[i] === 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading') {
+       headersArr.splice(i, 1);
+    }
+  }
+  */
+
+  // ----- attempt to build a filter function
+  /*
+  function arrFilter(header) {
+    return header !== 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading';
+  }
+  headersArr.filter(arrFilter);
+  */
+
+  // ----- attempt to build a filter function 2
+  /*
+  headersArr.filter(val => val !== 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading' );
+  */
+
+  //headersArr.splice(-3);
   console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
-// Add subheadings to an array
-function pullTextSubheadings(extractStr) {
-  console.log('pullTextHeadings ran');
-  let subheaders = $('#string').find('h3');
-  console.log(subheaders);
-  for (let i = 0; i < subheaders.length; i++) {
-    subheadersArr.push(subheaders[i].textContent);
-  };
-  console.log(subheadersArr);
+// Parse text strings
+function splitExtractStr(extractStr) {
+  let textArr = extractStr.split('<h2>');
+  textArr.forEach(item => {
+    let plainTextArr = $(item).text();
+    console.log(plainTextArr);
+  });
 }
-
-// Create an object with headings as keys
-
-// Add text strings as object values
 
 // Render headings as links
 function renderHeaderLinks(headersArr) {
@@ -70,8 +84,7 @@ function renderHeaderLinks(headersArr) {
   );
 }
 
-//articleObj = $(headersArr[0]).child();
-//console.log(articleObj);
+
 
 // TO DO
 // Render a stop button (pass '' string to polly)
