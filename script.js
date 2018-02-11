@@ -12,7 +12,7 @@ function getDataFromWikiApi(searchTerm) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
       renderJSON(extractStr);
-      splitExtractStr(extractStr);
+      parseTextArr(extractStr);
     }
   };
   $.ajax(query);
@@ -37,6 +37,7 @@ function pullTextHeadings(extractStr) {
   };
   headersArr.splice(0, 0, 'Introduction');
 
+  // ??? How to remove unwanted values from array? (and same tail end from plainTextArr)
   // ----- attempt to splice unwanted values
   /*
   for(let i = 0; i < headersArr.length; i++) {
@@ -65,34 +66,52 @@ function pullTextHeadings(extractStr) {
 }
 
 // Parse text strings
-function splitExtractStr(extractStr) {
+function parseTextArr(extractStr) {
+  console.log('parseTextArr ran');
   let textArr = extractStr.split('<h2>');
-  textArr.forEach(item => {
-    let plainTextArr = $(item).text();
-    console.log(plainTextArr);
+  let plainTextArr = [];
+  textArr.forEach((item, index) => {
+    plainTextArr.push($(item).text());
   });
+  console.log(plainTextArr);
+  handleHeaderClick(headersArr, plainTextArr);
 }
 
 // Render headings as links
+// ??? How to assign index nubmer as id?
 function renderHeaderLinks(headersArr) {
   console.log('renderHeaderLinks ran');
-  headersArr.forEach(item => {
+  headersArr.forEach((item, index) => {
     console.log(item);
     $('.contents-links').append(`
-      <li><a href="url">${item}</a></li>
+      <li data='${index}'><a href="url">${item}</a></li>
     `)}
   );
 }
 
+// Handle click on header links
+function handleHeaderClick(headersArr, plainTextArr) {
+  console.log('watchSubmit ran')
+  $('.contents-links').submit(event => {
+    event.preventDefault();
+    let index = parseInt($(this).attr('data'));
+    console.log(index);
+    // When click on headersArr[i], return plainTextArr[i]
+    // Return here to test, ultimately pass to Polly.
+    // ??? On click, possible to append id='textForSpeech' to the corresponding plainTextArr index?
+  });
+}
 
 
 // TO DO
+// Wire up polly.js file
 // Render a stop button (pass '' string to polly)
 // Handle content link click - pass text or '' to polly
-// Render & handle disambiguation, errors (post mvp)
-// Generate random page when no input is given (post mvp)
+// ??? Render & handle input (title case + singular), disambiguation, errorr (library?)
+// Generate random page when no input is given
 // https://en.wikipedia.org/wiki/Special:Random
-// ** Pull out any unreadable tags
+// Pull out any unreadable tags
+
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (text) {
@@ -103,9 +122,9 @@ function getAudioFromPollyAPI (text) {
   let polly = new AWS.Polly();
   const params = {
     OutputFormat: 'mp3', 
-    Text: 'Hello world', 
+    Text: ``, 
     TextType: "text", 
-    VoiceId: "Raveena"
+    VoiceId: "Kimberly"
     };
     
     polly.synthesizeSpeech(params, function(err, data) {
@@ -126,6 +145,7 @@ function getAudioFromPollyAPI (text) {
   });
 }
 
+
 //Handle submit search
 function submitSearch() {
   console.log('submitSearch ran');
@@ -139,4 +159,4 @@ function submitSearch() {
 }
 
 $(submitSearch);
-//$(getAudioFromPollyAPI);
+$(getAudioFromPollyAPI);
