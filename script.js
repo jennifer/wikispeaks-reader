@@ -79,7 +79,7 @@ function renderHeaderLinks(headersArr) {
   headersArr.forEach(item => {
     console.log(item);
     $('.contents-links').append(`
-      <li>${item}</li>
+      <li><a href="url">${item}</a></li>
     `)}
   );
 }
