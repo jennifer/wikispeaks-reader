@@ -16,6 +16,21 @@ function getDataFromWikiApi(searchTerm) {
   $.ajax(query);
 }
 
+function getRandomDataFromWikiApi(searchTerm) {
+  console.log('getDataFromAPI ran');
+  const query = { 
+    url: `https://en.wikipedia.org/w/api.php?action=query&generator=random&rnnamespace:WP&prop=extracts&format=json`,
+    dataType: "JSONP",
+    success: function(data) {
+      let page = Object.keys(data.query.pages)[0];
+      extractStr = data.query.pages[page].extract;
+      renderJSON(extractStr);
+      parseTextArr(extractStr);
+    }
+  };
+  $.ajax(query);
+}
+
 //test API call
 function renderJSON(extractStr) {
   console.log('testAPICall ran');
@@ -60,7 +75,7 @@ function pullTextHeadings(extractStr) {
 
   // splice is a temporary fix - need to remove specific values
   headersArr.splice(-4);
-  // possible to render this after first click
+  // possible to render this after first click?
   headersArr.push('Stop Audio');
   console.log(headersArr);
   renderHeaderLinks(headersArr);
@@ -105,8 +120,9 @@ function handleHeaderClick(headersArr, plainTextArr) {
 }
 
 // TO DO
+// Add title!
+// Pull images
 // Wire up polly.js file
-// Render a stop button (pass '' string to polly)
 // Handle content link click - pass text or '' to polly
 // ??? Render & handle input (title case + singular), disambiguation, errorr (library?)
 // Generate random page when no input is given
@@ -153,9 +169,15 @@ function submitSearch() {
   $('.search-form').submit(event => {
     event.preventDefault();
     const queryTarget = $(event.currentTarget).find('.search-input');
-    searchTerm = queryTarget.val();
-    queryTarget.val('');
-    getDataFromWikiApi(searchTerm/*, parseWikiText*/);
+    if (queryTarget.val()) {
+      searchTerm = queryTarget.val();
+      queryTarget.val('');
+      getDataFromWikiApi(searchTerm);
+    }
+    else {
+      queryTarget.val('');
+      getRandomDataFromWikiApi();
+    }
   });
 }
 
