@@ -84,18 +84,22 @@ function renderHeaderLinks(headersArr) {
   headersArr.forEach((item, index) => {
     console.log(item);
     $('.contents-links').append(`
-      <li data='${index}'><a href="url">${item}</a></li>
+      <button class='header' data='${index}'>${item}</button>
     `)}
   );
 }
 
 // Handle click on header links
 function handleHeaderClick(headersArr, plainTextArr) {
-  console.log('watchSubmit ran')
-  $('.contents-links').submit(event => {
+  console.log('handleHeaderClick ran')
+  $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
     let index = parseInt($(this).attr('data'));
     console.log(index);
+    $('.main').append(`
+      <p>test ${plainTextArr[index]}</p>
+    `);
+    console.log(plainTextArr[index])
     // When click on headersArr[i], return plainTextArr[i]
     // Return here to test, ultimately pass to Polly.
     // ??? On click, possible to append id='textForSpeech' to the corresponding plainTextArr index?
