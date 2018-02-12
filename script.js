@@ -94,15 +94,10 @@ function handleHeaderClick(headersArr, plainTextArr) {
   console.log('handleHeaderClick ran')
   $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
-    let index = parseInt($(this).attr('data'));
-    console.log(index);
-    $('.main').append(`
-      <p>test ${plainTextArr[index]}</p>
-    `);
-    console.log(plainTextArr[index])
-    // When click on headersArr[i], return plainTextArr[i]
-    // Return here to test, ultimately pass to Polly.
-    // ??? On click, possible to append id='textForSpeech' to the corresponding plainTextArr index?
+    let index = $(event.target).attr('data');
+    let pollyText = plainTextArr[index];
+    console.log(pollyText);
+    getAudioFromPollyAPI(pollyText);
   });
 }
 
@@ -118,7 +113,7 @@ function handleHeaderClick(headersArr, plainTextArr) {
 
 
 //Submit parsed content to Polly API
-function getAudioFromPollyAPI (text) {
+function getAudioFromPollyAPI (pollyText) {
   AWS.config.accessKeyId = config.MY_KEY;
   AWS.config.secretAccessKey = config.SECRET_KEY;
   AWS.config.region = 'us-west-2';
@@ -126,7 +121,7 @@ function getAudioFromPollyAPI (text) {
   let polly = new AWS.Polly();
   const params = {
     OutputFormat: 'mp3', 
-    Text: ``, 
+    Text: `${pollyText}`, 
     TextType: "text", 
     VoiceId: "Kimberly"
     };
