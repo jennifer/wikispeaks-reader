@@ -1,7 +1,5 @@
 let headersArr = [];
 
-//Render page
-
 //Call Wikipedia api to get JSON (input else random)
 function getDataFromWikiApi(searchTerm) {
   console.log('getDataFromAPI ran');
@@ -60,7 +58,10 @@ function pullTextHeadings(extractStr) {
   headersArr.filter(val => val !== 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading' );
   */
 
-  //headersArr.splice(-3);
+  // splice is a temporary fix - need to remove specific values
+  headersArr.splice(-4);
+  // possible to render this after first click
+  headersArr.push('Stop Audio');
   console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
@@ -73,12 +74,14 @@ function parseTextArr(extractStr) {
   textArr.forEach((item, index) => {
     plainTextArr.push($(item).text());
   });
+  // splice is a temporary fix. need to remove same number of values as headersArr above
+  plainTextArr.splice(-4);
+  plainTextArr.push('');
   console.log(plainTextArr);
   handleHeaderClick(headersArr, plainTextArr);
 }
 
 // Render headings as links
-// ??? How to assign index nubmer as id?
 function renderHeaderLinks(headersArr) {
   console.log('renderHeaderLinks ran');
   headersArr.forEach((item, index) => {
@@ -100,7 +103,6 @@ function handleHeaderClick(headersArr, plainTextArr) {
     getAudioFromPollyAPI(pollyText);
   });
 }
-
 
 // TO DO
 // Wire up polly.js file
@@ -158,4 +160,3 @@ function submitSearch() {
 }
 
 $(submitSearch);
-$(getAudioFromPollyAPI);
