@@ -9,8 +9,11 @@ function getDataFromWikiApi(inputURL) {
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
-      title = data.query.pages[page].title;
-      renderTitle(title);
+      articleTitle = data.query.pages[page].title;
+      pageImg = data.query.pages[page].original.source;
+      console.log(pageImg);
+      renderTitle(articleTitle);
+      renderImage(pageImg);
       renderJSON(extractStr);
       parseTextArr(extractStr);
     }
@@ -18,10 +21,17 @@ function getDataFromWikiApi(inputURL) {
   $.ajax(query);
 }
 
-function renderTitle(title) {
+function renderTitle(articleTitle) {
   console.log('renderTitle ran');
   $('.contents').prepend(`
-    <h2>${title}</h2>
+    <h2>${articleTitle}</h2>
+    `);
+}
+
+function renderImage(pageImg) {
+  console.log('renderImage ran');
+  $('.contents').append(`
+    <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
     `);
 }
 
@@ -166,11 +176,11 @@ function submitSearch() {
     const queryTarget = $(event.currentTarget).find('.search-input');
     if (queryTarget.val()) {
       searchTerm = queryTarget.val();
-      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts&format=json`
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts|pageimages&piprop=original&format=json`
       queryTarget.val('');
     }
     else {
-      inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts&format=json`
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts|pageimages&piprop=original&format=json`
       queryTarget.val('');
     }
       getDataFromWikiApi(inputURL);
