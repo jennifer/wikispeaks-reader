@@ -1,25 +1,10 @@
 let headersArr = [];
 
 //Call Wikipedia api to get JSON (input else random)
-function getDataFromWikiApi(searchTerm) {
+function getDataFromWikiApi(inputURL) {
   console.log('getDataFromAPI ran');
   const query = { 
-    url: `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts&format=json`,
-    dataType: "JSONP",
-    success: function(data) {
-      let page = Object.keys(data.query.pages)[0];
-      extractStr = data.query.pages[page].extract;
-      renderJSON(extractStr);
-      parseTextArr(extractStr);
-    }
-  };
-  $.ajax(query);
-}
-
-function getRandomDataFromWikiApi(searchTerm) {
-  console.log('getDataFromAPI ran');
-  const query = { 
-    url: `https://en.wikipedia.org/w/api.php?action=query&generator=random&rnnamespace:WP&prop=extracts&format=json`,
+    url: inputURL,
     dataType: "JSONP",
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
@@ -74,7 +59,7 @@ function pullTextHeadings(extractStr) {
   */
 
   // splice is a temporary fix - need to remove specific values
-  headersArr.splice(-4);
+  // headersArr.splice(-4);
   // possible to render this after first click?
   headersArr.push('Stop Audio');
   console.log(headersArr);
@@ -90,7 +75,7 @@ function parseTextArr(extractStr) {
     plainTextArr.push($(item).text());
   });
   // splice is a temporary fix. need to remove same number of values as headersArr above
-  plainTextArr.splice(-4);
+  // plainTextArr.splice(-4);
   plainTextArr.push('');
   console.log(plainTextArr);
   handleHeaderClick(headersArr, plainTextArr);
@@ -168,16 +153,18 @@ function submitSearch() {
   console.log('submitSearch ran');
   $('.search-form').submit(event => {
     event.preventDefault();
+    let inputURL = ``;
     const queryTarget = $(event.currentTarget).find('.search-input');
     if (queryTarget.val()) {
       searchTerm = queryTarget.val();
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts&format=json`
       queryTarget.val('');
-      getDataFromWikiApi(searchTerm);
     }
     else {
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts&format=json`
       queryTarget.val('');
-      getRandomDataFromWikiApi();
     }
+      getDataFromWikiApi(inputURL);
   });
 }
 
