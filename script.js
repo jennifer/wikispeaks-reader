@@ -9,6 +9,8 @@ function getDataFromWikiApi(inputURL) {
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
+      title = data.query.pages[page].title;
+      renderTitle(title);
       renderJSON(extractStr);
       parseTextArr(extractStr);
     }
@@ -16,18 +18,26 @@ function getDataFromWikiApi(inputURL) {
   $.ajax(query);
 }
 
+function renderTitle(title) {
+  console.log('renderTitle ran');
+  $('.contents').prepend(`
+    <h2>${title}</h2>
+    `);
+}
+
+//Possible to grab h2 text with out injecting html string?
 //test API call
 function renderJSON(extractStr) {
   console.log('testAPICall ran');
   $('#string').html(`
     <p>${extractStr}</p>
     `);
-  pullTextHeadings(extractStr);
+  pushTextHeadings(extractStr);
 }
 
 // Add headings to an array
-function pullTextHeadings(extractStr) {
-  console.log('pullTextHeadings ran');
+function pushTextHeadings(extractStr) {
+  console.log('pushTextHeadings ran');
   let headers = $('#string').find('h2');
   console.log(headers);
   for (let i = 0; i < headers.length; i++) {
@@ -105,7 +115,6 @@ function handleHeaderClick(headersArr, plainTextArr) {
 }
 
 // TO DO
-// Add title!
 // Pull images
 // Wire up polly.js file
 // Handle content link click - pass text or '' to polly
