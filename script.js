@@ -10,12 +10,18 @@ function getDataFromWikiApi(inputURL) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
       articleTitle = data.query.pages[page].title;
-      pageImg = data.query.pages[page].original.source;
-      console.log(pageImg);
-      renderTitle(articleTitle);
-      renderImage(pageImg);
-      renderJSON(extractStr);
-      parseTextArr(extractStr);
+      try {
+        if (data.query.pages[page].original.source) {
+          pageImg = data.query.pages[page].original.source;
+          renderImage(pageImg);
+        }
+      } 
+      catch (e) {}
+      finally {
+        renderTitle(articleTitle);
+        renderJSON(extractStr);
+        parseTextArr(extractStr);
+      }
     }
   };
   $.ajax(query);
@@ -35,8 +41,8 @@ function renderImage(pageImg) {
     `);
 }
 
-//Possible to grab h2 text with out injecting html string?
-//test API call
+// ??? Possible to grab h2 text with out injecting html string?
+// test API call
 function renderJSON(extractStr) {
   console.log('testAPICall ran');
   $('#string').html(`
@@ -124,15 +130,7 @@ function handleHeaderClick(headersArr, plainTextArr) {
   });
 }
 
-// TO DO
-// Pull images
-// Wire up polly.js file
-// Handle content link click - pass text or '' to polly
-// ??? Render & handle input (title case + singular), disambiguation, errorr (library?)
-// Generate random page when no input is given
-// https://en.wikipedia.org/wiki/Special:Random
-// Pull out any unreadable tags
-
+// ??? Render & handle input (singular, capitalize proper names), disambiguation, erorr (library?)
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
@@ -150,7 +148,6 @@ function getAudioFromPollyAPI (pollyText) {
     
     polly.synthesizeSpeech(params, function(err, data) {
       if (err){
-      // an error occurred
       console.log(err, err.stack);
       } 
       else {
@@ -168,6 +165,7 @@ function getAudioFromPollyAPI (pollyText) {
 
 
 //Handle submit search
+// ??? How to reset the search so they don't stack?
 function submitSearch() {
   console.log('submitSearch ran');
   $('.search-form').submit(event => {
@@ -176,11 +174,11 @@ function submitSearch() {
     const queryTarget = $(event.currentTarget).find('.search-input');
     if (queryTarget.val()) {
       searchTerm = queryTarget.val();
-      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts|pageimages&piprop=original&format=json`
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
       queryTarget.val('');
     }
     else {
-      inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts|pageimages&piprop=original&format=json`
+      inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
       queryTarget.val('');
     }
       getDataFromWikiApi(inputURL);
