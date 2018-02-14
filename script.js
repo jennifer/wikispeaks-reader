@@ -1,19 +1,19 @@
 let headersArr = [];
+let plainTextArr = [];
 
 //Call Wikipedia api to get JSON (input else random)
 function getDataFromWikiApi(inputURL) {
-  console.log('getDataFromAPI ran');
   const query = { 
     url: inputURL,
     dataType: "JSONP",
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
-      extractStr = data.query.pages[page].extract;
-      articleTitle = data.query.pages[page].title;
+      let extractStr = data.query.pages[page].extract;
+      let articleTitle = data.query.pages[page].title;
       $('#image-content').empty();
       try {
         if (data.query.pages[page].original.source) {
-          pageImg = data.query.pages[page].original.source;
+          let pageImg = data.query.pages[page].original.source;
           renderImage(pageImg);
         }
       } 
@@ -22,6 +22,7 @@ function getDataFromWikiApi(inputURL) {
         renderTitle(articleTitle);
         renderJSON(extractStr);
         parseTextArr(extractStr);
+        handleHeaderClick(plainTextArr);
       }
     }
   };
@@ -29,20 +30,17 @@ function getDataFromWikiApi(inputURL) {
 }
 
 function renderTitle(articleTitle) {
-  console.log('renderTitle ran');
   $('#article-title').text(`${articleTitle}`);
 }
 
 function renderImage(pageImg) {
-  console.log('renderImage ran');
   $('#image-content').html(`
     <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
   `);
 }
 
-// test API call
+// Get HTML string
 function renderJSON(extractStr) {
-  console.log('testAPICall ran');
   $('#string').html(`
     <p>${extractStr}</p>
   `);
@@ -51,52 +49,22 @@ function renderJSON(extractStr) {
 
 // Add headings to an array
 function pushTextHeadings(extractStr) {
-  console.log('pushTextHeadings ran');
   let headers = $('#string').find('h2');
-  console.log(headers);
   headersArr = [];
   for (let i = 0; i < headers.length; i++) {
     headersArr.push(headers[i].textContent);
   };
   headersArr.splice(0, 0, 'Introduction');
-
-  // ??? How to remove unwanted values from array? (and same tail end from plainTextArr)
-  // ----- attempt to splice unwanted values
-  /*
-  for(let i = 0; i < headersArr.length; i++) {
-    if(headersArr[i] === 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading') {
-       headersArr.splice(i, 1);
-    }
-  }
-  */
-
-  // ----- attempt to build a filter function
-  /*
-  function arrFilter(header) {
-    return header !== 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading';
-  }
-  headersArr.filter(arrFilter);
-  */
-
-  // ----- attempt to build a filter function 2
-  /*
-  headersArr.filter(val => val !== 'See also' || 'Notes' || 'References' || 'External links' || 'Further reading' );
-  */
-
-  // splice is a temporary fix - need to remove specific values
-  // headersArr.splice(-4);
-  // ??? possible to render Stop Audio after first button is played?
+  // Remove unwanted array values
   headersArr.push('Stop Audio');
   console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
-// Render headings as links
+// Render heading array as links
 function renderHeaderLinks(headersArr) {
-  console.log('renderHeaderLinks ran');
   $('.contents-links').empty();
   headersArr.forEach((item, index) => {
-    console.log(item);
     $('.contents-links').append(`
       <button class='header' data='${index}'>${item}</button>
     `)}
@@ -105,21 +73,24 @@ function renderHeaderLinks(headersArr) {
 
 // Parse text strings
 function parseTextArr(extractStr) {
-  console.log('parseTextArr ran');
-  let plainTextArr = [];
+  plainTextArr = [];
+  console.log(plainTextArr);
   textArr = extractStr.split('<h2>');
+  console.log(textArr);
+  // Cut each array element at 1500 char
+  // Split each array element at '.'
+  // Remove last element from each inner array
+  // Rejoin each inner array with '.'
   textArr.forEach((item, index) => {
     plainTextArr.push($(item).text());
   });
   // Remove same number of values as headersArr above
   plainTextArr.push('');
   console.log(plainTextArr);
-  handleHeaderClick(headersArr, plainTextArr);
 }
 
-// Handle click on header links
-function handleHeaderClick(headersArr, plainTextArr) {
-  console.log('handleHeaderClick ran');
+// Pass string to Polly on click
+function handleHeaderClick() {
   $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
     let index = $(event.target).attr('data');
@@ -141,7 +112,7 @@ function getAudioFromPollyAPI (pollyText) {
     Text: `${pollyText}`, 
     TextType: "text", 
     VoiceId: "Kimberly"
-    };
+  };
     
     polly.synthesizeSpeech(params, function(err, data) {
       if (err){
@@ -160,11 +131,8 @@ function getAudioFromPollyAPI (pollyText) {
   });
 }
 
-
 //Handle submit search
-// ??? How to reset the search so they don't stack?
 function submitSearch() {
-  console.log('submitSearch ran');
   $('.search-form').submit(event => {
     event.preventDefault();
     let inputURL = ``;
