@@ -10,6 +10,7 @@ function getDataFromWikiApi(inputURL) {
       let page = Object.keys(data.query.pages)[0];
       extractStr = data.query.pages[page].extract;
       articleTitle = data.query.pages[page].title;
+      $('#image-content').empty();
       try {
         if (data.query.pages[page].original.source) {
           pageImg = data.query.pages[page].original.source;
@@ -29,25 +30,22 @@ function getDataFromWikiApi(inputURL) {
 
 function renderTitle(articleTitle) {
   console.log('renderTitle ran');
-  $('.contents').prepend(`
-    <h2>${articleTitle}</h2>
-    `);
+  $('#article-title').text(`${articleTitle}`);
 }
 
 function renderImage(pageImg) {
   console.log('renderImage ran');
-  $('.contents').append(`
+  $('#image-content').html(`
     <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
-    `);
+  `);
 }
 
-// ??? Possible to grab h2 text with out injecting html string?
 // test API call
 function renderJSON(extractStr) {
   console.log('testAPICall ran');
   $('#string').html(`
     <p>${extractStr}</p>
-    `);
+  `);
   pushTextHeadings(extractStr);
 }
 
@@ -56,6 +54,7 @@ function pushTextHeadings(extractStr) {
   console.log('pushTextHeadings ran');
   let headers = $('#string').find('h2');
   console.log(headers);
+  headersArr = [];
   for (let i = 0; i < headers.length; i++) {
     headersArr.push(headers[i].textContent);
   };
@@ -86,30 +85,16 @@ function pushTextHeadings(extractStr) {
 
   // splice is a temporary fix - need to remove specific values
   // headersArr.splice(-4);
-  // possible to render this after first click?
+  // ??? possible to render Stop Audio after first button is played?
   headersArr.push('Stop Audio');
   console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
-// Parse text strings
-function parseTextArr(extractStr) {
-  console.log('parseTextArr ran');
-  let textArr = extractStr.split('<h2>');
-  let plainTextArr = [];
-  textArr.forEach((item, index) => {
-    plainTextArr.push($(item).text());
-  });
-  // splice is a temporary fix. need to remove same number of values as headersArr above
-  // plainTextArr.splice(-4);
-  plainTextArr.push('');
-  console.log(plainTextArr);
-  handleHeaderClick(headersArr, plainTextArr);
-}
-
 // Render headings as links
 function renderHeaderLinks(headersArr) {
   console.log('renderHeaderLinks ran');
+  $('.contents-links').empty();
   headersArr.forEach((item, index) => {
     console.log(item);
     $('.contents-links').append(`
@@ -118,9 +103,23 @@ function renderHeaderLinks(headersArr) {
   );
 }
 
+// Parse text strings
+function parseTextArr(extractStr) {
+  console.log('parseTextArr ran');
+  let plainTextArr = [];
+  textArr = extractStr.split('<h2>');
+  textArr.forEach((item, index) => {
+    plainTextArr.push($(item).text());
+  });
+  // Remove same number of values as headersArr above
+  plainTextArr.push('');
+  console.log(plainTextArr);
+  handleHeaderClick(headersArr, plainTextArr);
+}
+
 // Handle click on header links
 function handleHeaderClick(headersArr, plainTextArr) {
-  console.log('handleHeaderClick ran')
+  console.log('handleHeaderClick ran');
   $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
     let index = $(event.target).attr('data');
@@ -129,8 +128,6 @@ function handleHeaderClick(headersArr, plainTextArr) {
     getAudioFromPollyAPI(pollyText);
   });
 }
-
-// ??? Render & handle input (singular, capitalize proper names), disambiguation, erorr (library?)
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
