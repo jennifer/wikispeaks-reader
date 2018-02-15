@@ -74,22 +74,22 @@ function renderHeaderLinks(headersArr) {
 // Parse text strings
 function parseTextArr(extractStr) {
   plainTextArr = [];
-  console.log(plainTextArr);
   textArr = extractStr.split('<h2>');
-  console.log(textArr);
-  // Cut each array element at 1500 char
-  // Split each array element at '.'
-  // Remove last element from each inner array
-  // Rejoin each inner array with '.'
   textArr.forEach((item, index) => {
-    plainTextArr.push($(item).text());
+    let charLimit = 1500;
+    plainTextArr.push($(item).text().substring(0, charLimit));
   });
-  // Remove same number of values as headersArr above
+  // ??? Don't think any of these methods are working
+  plainTextArr.forEach((item, index, array) => {
+    array[index].split('.').splice(-1, 1).join('.');
+  });
+  // ??? Remove same number of strings as headers
   plainTextArr.push('');
   console.log(plainTextArr);
 }
 
 // Pass string to Polly on click
+// ??? Stop audio on click
 function handleHeaderClick() {
   $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
