@@ -34,6 +34,7 @@ function renderTitle(articleTitle) {
 }
 
 function renderImage(pageImg) {
+  console.log('renderTitle ran');
   $('#image-content').html(`
     <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
   `);
@@ -137,17 +138,38 @@ function submitSearch() {
     event.preventDefault();
     let inputURL = ``;
     const queryTarget = $(event.currentTarget).find('.search-input');
+
     if (queryTarget.val()) {
       searchTerm = queryTarget.val();
-      inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
+      redirectURL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${searchTerm}&redirects=`
       queryTarget.val('');
+      console.log(redirectURL);
+      getTermFromReditect(redirectURL);
     }
+
     else {
       inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
       queryTarget.val('');
-    }
       getDataFromWikiApi(inputURL);
+    }
   });
+}
+
+// Get normalized term from redirect page
+function getTermFromReditect(redirectURL) {
+  const query = { 
+    url: redirectURL,
+    dataType: "JSONP",
+    success: function(data) {
+      let page = Object.keys(data.query.pages)[0];
+      let searchTermNorm = data.query.pages[page].title;
+      console.log(searchTermNorm);
+      let inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTermNorm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
+      console.log(inputURL);
+      getDataFromWikiApi(inputURL);
+      }
+    };
+  $.ajax(query);
 }
 
 $(submitSearch);
