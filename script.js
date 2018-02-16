@@ -11,19 +11,14 @@ function getDataFromWikiApi(inputURL) {
       let extractStr = data.query.pages[page].extract;
       let articleTitle = data.query.pages[page].title;
       $('#image-content').empty();
-      try {
-        if (data.query.pages[page].original.source) {
+      if (data.query.pages[page].original) {
           let pageImg = data.query.pages[page].original.source;
-          renderImage(pageImg);
-        }
-      } 
-      catch (e) {}
-      finally {
-        renderTitle(articleTitle);
-        renderJSON(extractStr);
-        parseTextArr(extractStr);
-        handleHeaderClick(plainTextArr);
+          renderImage(pageImg, articleTitle);
       }
+      renderTitle(articleTitle);
+      renderJSON(extractStr);
+      parseTextArr(extractStr);
+      handleHeaderClick(plainTextArr);
     }
   };
   $.ajax(query);
@@ -33,7 +28,7 @@ function renderTitle(articleTitle) {
   $('#article-title').text(`${articleTitle}`);
 }
 
-function renderImage(pageImg) {
+function renderImage(pageImg, articleTitle) {
   console.log('renderTitle ran');
   $('#image-content').html(`
     <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
@@ -58,7 +53,6 @@ function pushTextHeadings(extractStr) {
   headersArr.splice(0, 0, 'Introduction');
   // Remove unwanted array values
   headersArr.push('Stop Audio');
-  console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
@@ -86,7 +80,6 @@ function parseTextArr(extractStr) {
   });
   // ??? Remove same number of strings as headers
   plainTextArr.push('');
-  console.log(plainTextArr);
 }
 
 // Pass string to Polly on click
@@ -96,7 +89,6 @@ function handleHeaderClick() {
     event.preventDefault();
     let index = $(event.target).attr('data');
     let pollyText = plainTextArr[index];
-    console.log(pollyText);
     getAudioFromPollyAPI(pollyText);
   });
 }
@@ -110,11 +102,10 @@ function getAudioFromPollyAPI (pollyText) {
   let polly = new AWS.Polly();
   const params = {
     OutputFormat: 'mp3', 
-    Text: `${pollyText}`, 
+    Text: `${pollyText}`,
     TextType: "text", 
     VoiceId: "Kimberly"
   };
-    
     polly.synthesizeSpeech(params, function(err, data) {
       if (err){
       console.log(err, err.stack);
@@ -146,7 +137,6 @@ function submitSearch() {
       console.log(redirectURL);
       getTermFromReditect(redirectURL);
     }
-
     else {
       inputURL = `https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
       queryTarget.val('');
@@ -163,9 +153,7 @@ function getTermFromReditect(redirectURL) {
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
       let searchTermNorm = data.query.pages[page].title;
-      console.log(searchTermNorm);
       let inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTermNorm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
-      console.log(inputURL);
       getDataFromWikiApi(inputURL);
       }
     };
