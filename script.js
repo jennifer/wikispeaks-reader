@@ -113,9 +113,9 @@ function handleHeaderClick() {
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
-  if (process.env.MY_KEY) {
-    AWS.config.accessKeyId = process.env.MY_KEY;
-    AWS.config.secretAccessKey = process.env.SECRET_KEY;
+  if (env) {
+    AWS.config.accessKeyId = env.MY_KEY;
+    AWS.config.secretAccessKey = env.SECRET_KEY;
   }
   else {
     AWS.config.accessKeyId = config.MY_KEY;
