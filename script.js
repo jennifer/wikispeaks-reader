@@ -113,14 +113,8 @@ function handleHeaderClick() {
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
-  if (env) {
-    AWS.config.accessKeyId = env.MY_KEY;
-    AWS.config.secretAccessKey = env.SECRET_KEY;
-  }
-  else {
-    AWS.config.accessKeyId = config.MY_KEY;
-    AWS.config.secretAccessKey = config.SECRET_KEY;
-  }
+  AWS.config.accessKeyId = config.MY_KEY;
+  AWS.config.secretAccessKey = config.SECRET_KEY;
   AWS.config.region = 'us-west-2';
   let polly = new AWS.Polly();
   const params = {
