@@ -7,7 +7,6 @@ function getDataFromWikiApi(inputURL) {
       let page = Object.keys(data.query.pages)[0];
       let extractStr = data.query.pages[page].extract;
       let articleTitle = data.query.pages[page].title;
-      $('#image-content').empty();
       if (data.query.pages[page].original) {
           let pageImg = data.query.pages[page].original.source;
           renderImage(pageImg, articleTitle);
@@ -58,18 +57,24 @@ function pushTextHeadings(extractStr) {
       headersArr.splice(index2, 1);
     }
   });
-  
   headersArr.splice(0, 0, 'Introduction');
   headersArrLg = headersArr.length;
-
   headersArr.push('Stop Audio');
-  console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
 // Render heading array as links
 function renderHeaderLinks(headersArr) {
-  $('.contents-links').empty();
+  // Render form
+  $('.content-buttons').append(`
+    <form>
+      <fieldset class='contents-links'>
+        <legend>Contents</legend>
+      </fieldset>
+    </form>
+    `);
+  
+  // Render buttons
   headersArr.forEach((item, index) => {
     $('.contents-links').append(`
       <button class='header' data='${index}'>${item}</button>
@@ -86,11 +91,12 @@ function parseTextArr(extractStr) {
     let charLimit = 1500;
     plainTextArr.push($(item).text().substring(0, charLimit));
   });
+  
   // ??? Don't think any of these methods are working
   plainTextArr.forEach((item, index, array) => {
     array[index].split('.').splice(-1, 1).join('.');
   });
-
+  
   //Remove unwanted array values
   let removeText = plainTextArr.length - headersArrLg;
   plainTextArr.splice(-`${removeText}`, removeText, '');
@@ -98,7 +104,6 @@ function parseTextArr(extractStr) {
 }
 
 // Pass string to Polly on click
-// ??? Stop audio on click
 function handleHeaderClick() {
   $('.contents-links').on('click', '.header', event => {
     event.preventDefault();
@@ -143,10 +148,18 @@ function getAudioFromPollyAPI (pollyText) {
 function submitSearch() {
   $('.search-form').submit(event => {
     event.preventDefault();
-    $('.error-message').html('');
-    let inputURL = ``;
-    const queryTarget = $(event.currentTarget).find('.search-input');
 
+    // Clear previous inputs
+    $('.error-message').empty();
+    $('.contents-links').empty();
+    $('.content-buttons').empty();
+    $('#article-title').empty();
+    $('#image-content').empty();
+    pollyText = '';
+    getAudioFromPollyAPI(pollyText);
+    let inputURL = ``;
+
+    const queryTarget = $(event.currentTarget).find('.search-input');
     if (queryTarget.val()) {
       searchTerm = queryTarget.val();
       redirectURL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${searchTerm}&redirects=`
@@ -170,6 +183,8 @@ function getTermFromReditect(redirectURL) {
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
       console.log(page);
+
+      // Handle input errors
       if (page == -1) {
         $('.error-message').html('<p>Not found - check spelling and search again</p>');
         return;
