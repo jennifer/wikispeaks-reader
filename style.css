@@ -1,3 +1,89 @@
+html, body, div, h1, h2, img, fieldset, form, label, legend, header, section {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+main {
+  display: inline-grid;
+  grid-template-rows: 75px 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100vw;
+  height: 100vh;
+  background-color: #EFE891;
+  border: 2px solid black;
+
+}
+
+header {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  border-bottom: 2px solid black;
+}
+
+.header-left, .header-right {
+  display: inline-block;
+  padding: 20px;
+}
+
+.header-right {
+  float: right;
+}
+
+.search-wrapper {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  padding: 20px;
+}
+
+.contents-wrapper {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  padding: 20px;
+}
+
+.image-wrapper {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  padding: 20px;
+}
+
+.header-button {
+  display: block;
+  width: 100%;
+  height: 40px;
+  background-color: #F6F6F6;
+  border-width: 2px 2px 0 2px;
+  border-style: solid;
+  border-color: black;
+}
+
+.header-button:last-of-type {
+  background-color: #F12D2D;
+  border-bottom: 2px solid black;
+}
+
 .pageimg {
-	width: 600px;
+	width: 80%;
+  border: 2px solid;
+  position: absolute;
+}
+
+.image-shadow {
+  width: 80%;
+  height: 300px;
+  margin-right: 20px;
+  background-color: #3F52E3;
 }

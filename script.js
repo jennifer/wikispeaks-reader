@@ -29,6 +29,7 @@ function renderImage(pageImg, articleTitle) {
   $('#image-content').html(`
     <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
   `);
+  $(".image-shadow").height($("#pageimg").height());
 }
 
 // Get HTML string
@@ -69,15 +70,15 @@ function renderHeaderLinks(headersArr) {
   $('.content-buttons').append(`
     <form>
       <fieldset class='contents-links'>
-        <legend>Contents</legend>
+        <legend>Click to search</legend>
       </fieldset>
     </form>
     `);
-  
+
   // Render buttons
   headersArr.forEach((item, index) => {
     $('.contents-links').append(`
-      <button class='header' data='${index}'>${item}</button>
+      <button class='header-button' data='${index}'>${item}</button>
     `)}
   );
 }
@@ -91,35 +92,36 @@ function parseTextArr(extractStr) {
     let charLimit = 1500;
     plainTextArr.push($(item).text().substring(0, charLimit));
   });
-  
-  // ??? Don't think any of these methods are working
-  plainTextArr.forEach((item, index, array) => {
-    array[index].split('.').splice(-1, 1).join('.');
+    plainTextArr.forEach((item, index, array) => {
+    array[index] = array[index].split('.').slice(0, -1).join('.');
   });
   
   //Remove unwanted array values
   let removeText = plainTextArr.length - headersArrLg;
   plainTextArr.splice(-`${removeText}`, removeText, '');
-  console.log(plainTextArr);
 }
 
 // Pass string to Polly on click
 function handleHeaderClick() {
-  $('.contents-links').on('click', '.header', event => {
+  $('.contents-links').on('click', '.header-button', event => {
     event.preventDefault();
     let index = $(event.target).attr('data');
     let pollyText = plainTextArr[index];
     getAudioFromPollyAPI(pollyText);
-    console.log(pollyText);
   });
 }
 
 //Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
-  AWS.config.accessKeyId = config.MY_KEY;
-  AWS.config.secretAccessKey = config.SECRET_KEY;
+  if (process.env.MY_KEY) {
+    AWS.config.accessKeyId = process.env.MY_KEY;
+    AWS.config.secretAccessKey = process.env.SECRET_KEY;
+  }
+  else {
+    AWS.config.accessKeyId = config.MY_KEY;
+    AWS.config.secretAccessKey = config.SECRET_KEY;
+  }
   AWS.config.region = 'us-west-2';
-  
   let polly = new AWS.Polly();
   const params = {
     OutputFormat: 'mp3', 
