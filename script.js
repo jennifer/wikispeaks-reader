@@ -1,6 +1,3 @@
-let headersArr = [];
-let plainTextArr = [];
-
 //Call Wikipedia api to get JSON (input else random)
 function getDataFromWikiApi(inputURL) {
   const query = { 
@@ -44,6 +41,7 @@ function renderJSON(extractStr) {
 }
 
 // Add headings to an array
+let headersArr = [];
 let headersArrLg = 0;
 function pushTextHeadings(extractStr) {
   let headers = $('#string').find('h2');
@@ -53,7 +51,7 @@ function pushTextHeadings(extractStr) {
   };
 
   //Remove unwanted array values
-  let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes'];
+  let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes', 'Notes and references'];
   removeHeadersArr.forEach((item, index) => {
     let index2 = headersArr.indexOf(removeHeadersArr[index]);
     if (index2 > -1) {
@@ -80,6 +78,7 @@ function renderHeaderLinks(headersArr) {
 }
 
 // Parse text strings
+let plainTextArr = [];
 function parseTextArr(extractStr) {
   plainTextArr = [];
   textArr = extractStr.split('<h2>');
@@ -144,6 +143,7 @@ function getAudioFromPollyAPI (pollyText) {
 function submitSearch() {
   $('.search-form').submit(event => {
     event.preventDefault();
+    $('.error-message').html('');
     let inputURL = ``;
     const queryTarget = $(event.currentTarget).find('.search-input');
 
@@ -169,9 +169,16 @@ function getTermFromReditect(redirectURL) {
     dataType: "JSONP",
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
-      let searchTermNorm = data.query.pages[page].title;
-      let inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTermNorm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
-      getDataFromWikiApi(inputURL);
+      console.log(page);
+      if (page == -1) {
+        $('.error-message').html('<p>Not found - check spelling and search again</p>');
+        return;
+      }
+      else {
+        let searchTermNorm = data.query.pages[page].title;
+        let inputURL = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTermNorm}&prop=extracts|pageimages&piprop=original&exlimit=max&format=json`
+        getDataFromWikiApi(inputURL);
+      }
       }
     };
   $.ajax(query);
