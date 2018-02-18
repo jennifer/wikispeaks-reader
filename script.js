@@ -44,15 +44,28 @@ function renderJSON(extractStr) {
 }
 
 // Add headings to an array
+let headersArrLg = 0;
 function pushTextHeadings(extractStr) {
   let headers = $('#string').find('h2');
   headersArr = [];
   for (let i = 0; i < headers.length; i++) {
     headersArr.push(headers[i].textContent);
   };
+
+  //Remove unwanted array values
+  let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes'];
+  removeHeadersArr.forEach((item, index) => {
+    let index2 = headersArr.indexOf(removeHeadersArr[index]);
+    if (index2 > -1) {
+      headersArr.splice(index2, 1);
+    }
+  });
+  
   headersArr.splice(0, 0, 'Introduction');
-  // Remove unwanted array values
+  headersArrLg = headersArr.length;
+
   headersArr.push('Stop Audio');
+  console.log(headersArr);
   renderHeaderLinks(headersArr);
 }
 
@@ -78,8 +91,11 @@ function parseTextArr(extractStr) {
   plainTextArr.forEach((item, index, array) => {
     array[index].split('.').splice(-1, 1).join('.');
   });
-  // ??? Remove same number of strings as headers
-  plainTextArr.push('');
+
+  //Remove unwanted array values
+  let removeText = plainTextArr.length - headersArrLg;
+  plainTextArr.splice(-`${removeText}`, removeText, '');
+  console.log(plainTextArr);
 }
 
 // Pass string to Polly on click
@@ -90,6 +106,7 @@ function handleHeaderClick() {
     let index = $(event.target).attr('data');
     let pollyText = plainTextArr[index];
     getAudioFromPollyAPI(pollyText);
+    console.log(pollyText);
   });
 }
 
