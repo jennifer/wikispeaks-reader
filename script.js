@@ -179,7 +179,7 @@ function getTermFromReditect(redirectURL) {
 
       // Handle input errors
       if (page == -1) {
-        $('.error-message').html('<p>Not found - check spelling and search again</p>');
+        $('.error-message').html('<p class="error">Not found! Check spelling and search again</p>');
         return;
       }
       else {

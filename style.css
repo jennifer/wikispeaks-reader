@@ -38,6 +38,7 @@ main {
   display: inline-grid;
   width: 100%;
   height: 100vh;
+  grid-template-rows: 200px auto;
   grid-template-columns: 1fr 1fr 1fr;
   background: linear-gradient(white, blue);
 }
@@ -51,13 +52,21 @@ main {
   grid-column-start: 2;
   grid-column-end: 3;
   padding: 50px 20px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .image-wrapper {
   grid-column-start: 3;
   grid-column-end: 4;
   z-index: 1;
+}
+
+.globe-wrapper {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  overflow: hidden;
 }
 
 .search-wrapper, .image-wrapper {
@@ -67,14 +76,13 @@ main {
 button {
   font-family: 'Overpass Mono', monospace;
   font-size: 20px;
-
   height: auto;
   background-color: white;
   border: 2px solid black;
 }
 
 button:hover {
-  background-color: blue;
+  background-color: green;
 }
 
 .search-button {
@@ -117,6 +125,10 @@ button:hover {
   margin: 25px 25px 25px 0;
 }
 
+.error {
+  color: red;
+}
+
 #article-title {
   font-size: 32px;
 }
@@ -127,33 +139,33 @@ button:hover {
 }
 
 .wiki-globe {
-  position: fixed;
-  height: 70%;
+  width: 80%;
   left: 0px;
-  bottom: -100px;
+  margin-top: 75px;
   -webkit-animation:spin 30s linear infinite;
   -moz-animation:spin 30s linear infinite;
   animation:spin 30s linear infinite;
-}
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } } 
-}
+  }
+  @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+  @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+  @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } } 
+  
 
-@media (max-width: 1000px) {
+@media (min-width: 651px) and (max-width: 1000px) {
   main {
-    grid-template-rows: 252px auto;
+    grid-template-rows: 200px auto auto;
     grid-template-columns: 1fr 1fr;
   }
   .image-wrapper {
-    grid-row-start: 2;
-    grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 2;
-    padding-top: 0;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    padding-top: 20px;
   }
-  .contents-wrapper {
-    padding: 50px 50px 50px 20px;
+  .globe-wrapper {
+    grid-row-start: 2;
+    grid-row-end: 4;
   }
 } 
 
@@ -161,7 +173,6 @@ button:hover {
   html {
     background-color: blue;
   }
-
   main {
     box-sizing: border-box;
     grid-template-rows: 180px auto auto auto;
@@ -183,8 +194,9 @@ button:hover {
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 2;
-    padding: 0;
-    margin: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
   }
   .contents-wrapper {
     grid-row-start: 3;
