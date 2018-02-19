@@ -167,6 +167,9 @@ button:hover {
     grid-row-start: 2;
     grid-row-end: 4;
   }
+  .wiki-globe {
+    bottom: -100px;
+  }
 } 
 
 @media (max-width: 650px) {
