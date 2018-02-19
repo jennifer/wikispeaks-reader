@@ -67,7 +67,7 @@ function pushTextHeadings(extractStr) {
 function renderHeaderLinks(headersArr) {
   // Render form
   $('.content-buttons').append(`
-    <form>
+    <form class='contents-form'>
       <fieldset class='contents-links'>
         <legend>Click to listen</legend>
       </fieldset>
