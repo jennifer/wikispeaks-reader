@@ -1,4 +1,4 @@
-html, body, div, h1, h2, img, fieldset, form, label, legend, header, section {
+html, body, button, div, h1, h2, img, input, fieldset, form, label, legend, header, p, section {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -12,11 +12,10 @@ main {
   display: inline-grid;
   grid-template-rows: 75px 100%;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  background-color: #EFE891;
-  border: 2px solid black;
-
+  font-family: 'Overpass Mono', monospace;
+  font-size: 20px;
 }
 
 header {
@@ -25,15 +24,23 @@ header {
   grid-column-start: 1;
   grid-column-end: 4;
   border-bottom: 2px solid black;
+  font-size: 32px;
 }
 
 .header-left, .header-right {
   display: inline-block;
-  padding: 20px;
+}
+
+.header-left {
+  padding-top: 10px;
+  padding-left: 20px;
 }
 
 .header-right {
   float: right;
+  font-size: 24px;
+  padding-top: 17px;
+  padding-right: 20px;
 }
 
 .search-wrapper {
@@ -41,7 +48,6 @@ header {
   grid-row-end: 3;
   grid-column-start: 1;
   grid-column-end: 2;
-  padding: 20px;
 }
 
 .contents-wrapper {
@@ -49,7 +55,9 @@ header {
   grid-row-end: 3;
   grid-column-start: 2;
   grid-column-end: 3;
-  padding: 20px;
+  padding: 50px 20px;
+  background: linear-gradient(white, blue);
+  z-index: 1;
 }
 
 .image-wrapper {
@@ -57,33 +65,87 @@ header {
   grid-row-end: 3;
   grid-column-start: 3;
   grid-column-end: 4;
-  padding: 20px;
+}
+
+.search-wrapper, .image-wrapper {
+  padding: 50px;
+  background: linear-gradient(white, blue);
+}
+
+button {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 20px;
+
+  height: auto;
+  background-color: white;
+  border: 2px solid black;
+}
+
+button:hover {
+  background-color: #3F52E3;
+}
+
+.search-button {
+  height:40px;
+  width: 40px;
+  position: absolute;
 }
 
 .header-button {
   display: block;
   width: 100%;
-  height: 40px;
-  background-color: #F6F6F6;
   border-width: 2px 2px 0 2px;
-  border-style: solid;
-  border-color: black;
+  padding: 7px;
 }
 
 .header-button:last-of-type {
-  background-color: #F12D2D;
+  color: #F12D2D;
   border-bottom: 2px solid black;
 }
 
-.pageimg {
-	width: 80%;
-  border: 2px solid;
-  position: absolute;
+.header-button:last-of-type:hover {
+  background-color: #F12D2D;
+  color: black;
 }
 
-.image-shadow {
-  width: 80%;
-  height: 300px;
-  margin-right: 20px;
-  background-color: #3F52E3;
+.search-input {
+  box-sizing: border-box;
+  height: 40px;
+  width: 88%;
+  min-width: 100px;
+  border-width: 2px 0 2px 2px;
+  border-style: solid;
+  border-color: black;
+  padding-left: 10px;
+}
+
+.random {
+  transform: rotate(-15deg);
+  float: right;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
+#article-title {
+  font-size: 32px;
+}
+
+.pageImg {
+  width: 100%;
+  border: 2px solid black;
+}
+
+.wiki-globe {
+  position: fixed;
+  height: 70%;
+  width: auto;
+  left: 0px;
+  bottom: -100px;
+  -webkit-animation:spin 30s linear infinite;
+  -moz-animation:spin 30s linear infinite;
+  animation:spin 30s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } } 
 }

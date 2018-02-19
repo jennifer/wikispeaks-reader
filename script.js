@@ -25,11 +25,10 @@ function renderTitle(articleTitle) {
 }
 
 function renderImage(pageImg, articleTitle) {
-  console.log('renderTitle ran');
   $('#image-content').html(`
-    <img src='${pageImg}' class='pageimg' alt='Photo of ${articleTitle}'>
+    <img src='${pageImg}' class='pageImg' alt='Photo of ${articleTitle}'>
+    <div class='image-shadow'></div>
   `);
-  $(".image-shadow").height($("#pageimg").height());
 }
 
 // Get HTML string
@@ -70,7 +69,7 @@ function renderHeaderLinks(headersArr) {
   $('.content-buttons').append(`
     <form>
       <fieldset class='contents-links'>
-        <legend>Click to search</legend>
+        <legend>Click to listen</legend>
       </fieldset>
     </form>
     `);
@@ -160,7 +159,6 @@ function submitSearch() {
       searchTerm = queryTarget.val();
       redirectURL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${searchTerm}&redirects=`
       queryTarget.val('');
-      console.log(redirectURL);
       getTermFromReditect(redirectURL);
     }
     else {
@@ -178,7 +176,6 @@ function getTermFromReditect(redirectURL) {
     dataType: "JSONP",
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
-      console.log(page);
 
       // Handle input errors
       if (page == -1) {

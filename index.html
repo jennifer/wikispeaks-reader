@@ -5,21 +5,22 @@
     <meta name='viewport' content='width=device-width'>
 		<title>Wikispeaks</title>
     <link href='style.css' rel='stylesheet' type='text/css' />
+    <link href="https://fonts.googleapis.com/css?family=Overpass+Mono" rel="stylesheet">
 	</head>
 	<body>
     <main role='main'>
-    <header role='banner'>
-      <h1 class='header-left'>WikispeakS</h1><h2 class='header-right'>Wikipedia article text-to-speech</h2>
-    </header>
+      <header role='banner'>
+        <h1 class='header-left'>WikispeakS</h1><h2 class='header-right'>Article text-to-speech</h2>
+      </header>
       <section class='search-wrapper'>
         <label for='input'>Search Wikipedia</label>
-          <p>Click for random</p>
           <form action='#' class='search-form'>
-            <input type='text' class='search-input' id='input' /><span class='input-group-button'>
-              <button type='submit' class='button search-button'>Search</button>
+            <span class='input-group-button'><input type='text' class='search-input' id='input' autofocus /><button type='submit' class='button search-button'>?</button>
             </span>
           </form>
+        <p class='random'>Click for random</p>
         <div class='error-message'></div>
+        <a><img src="https://i.imgur.com/2ZeNLbU.png" class='wiki-globe' alt='Wikipedia puzzle globe logo'/></a>
       </section>
       <section class='contents-wrapper'>
         <h2 id='article-title'></h2>
@@ -27,11 +28,10 @@
         <audio>
           <source class="track" src="" type="audio/mpeg">
         </audio>
+        <div id='string' class='string' hidden></div>
       </section>
       <section class='image-wrapper'>
-        <div class='image-shadow'></div>
         <div id='image-content'></div>        
-        <div id='string' class='string' hidden></div>
       </section>
     </main>
 	  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
