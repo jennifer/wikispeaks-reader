@@ -50,7 +50,7 @@ function pushTextHeadings(extractStr) {
   };
 
   //Remove unwanted array values
-  let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes', 'Notes and references'];
+  let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes', 'Notes and references', 'Maps'];
   removeHeadersArr.forEach((item, index) => {
     let index2 = headersArr.indexOf(removeHeadersArr[index]);
     if (index2 > -1) {
