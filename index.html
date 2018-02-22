@@ -6,6 +6,7 @@
 		<title>Wikispeaks</title>
     <link href='style.css' rel='stylesheet' type='text/css' />
     <link href="https://fonts.googleapis.com/css?family=Overpass+Mono" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
 	</head>
 	<body>
     <header role='banner'>
@@ -18,20 +19,19 @@
             <span class='input-group-button'><input type='text' class='search-input' id='input' autofocus /><button type='submit' class='button search-button'>?</button>
             </span>
           </form>
-        <p class='random'>Click for random</p>
+        <p id='random'>Click for random</p>
         <div class='error-message'></div>
       </section>
       <section class='globe-wrapper'><img src="https://i.imgur.com/2ZeNLbU.png" class='wiki-globe' alt='Wikipedia puzzle globe logo'/></section>
       <section class='contents-wrapper'>
-        <h2 id='article-title'></h2>
+        <div class='title-wrapper'></div>
         <div class='content-buttons'></div>
         <audio>
           <source class="track" src="" type="audio/mpeg">
         </audio>
         <div id='string' class='string' hidden></div>
       </section>
-      <section class='image-wrapper'>
-        <div id='image-content'></div>        
+      <section class='image-wrapper'>       
       </section>
     </main>
 	  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>

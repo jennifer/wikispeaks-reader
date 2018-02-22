@@ -82,7 +82,19 @@ button {
 }
 
 button:hover {
-  background-color: green;
+  background-color: #00cc00;
+}
+
+button:active {
+  font-size: 19px;
+}
+
+#random:hover {
+  font-size: 22px;
+}
+
+#random:active {
+  font-size: 20px;
 }
 
 .search-button {
@@ -120,7 +132,7 @@ button:hover {
   padding-left: 10px;
 }
 
-.random {
+#random {
   transform: rotate(-15deg);
   float: right;
   margin: 25px 25px 25px 0;
@@ -157,9 +169,11 @@ button:hover {
     grid-template-rows: 200px auto auto;
     grid-template-columns: 1fr 1fr;
   }
+
   .contents-wrapper {
     padding-right: 50px;
   }
+
   .image-wrapper {
     grid-column-start: 1;
     grid-column-end: 2;
@@ -167,10 +181,12 @@ button:hover {
     grid-row-end: 3;
     padding-top: 20px;
   }
+
   .globe-wrapper {
     grid-row-start: 2;
     grid-row-end: 4;
   }
+  
   .wiki-globe {
     bottom: 0px;
   }
@@ -180,30 +196,35 @@ button:hover {
   html {
     background-color: blue;
   }
+
   main {
     box-sizing: border-box;
     grid-template-rows: 180px auto auto;
     grid-template-columns: 1fr;
     padding: 20px;
   }
+
   header {
     height: 100px;
   }
+
   .header-right {
     float: none;
     padding: 0 20px;
   }
+
   .search-wrapper {
     padding: 20px 0 0 0;
   }
+
   .image-wrapper {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 3;
-    padding: 0;
-    padding-bottom: 0;
+    padding: 0 0 20px 0;
   }
+
   .contents-wrapper {
     grid-row-start: 3;
     grid-row-end: 4;
@@ -211,6 +232,21 @@ button:hover {
     grid-column-end: 2;
     padding: 0 0 20px 0;
   }
+
+  #article-title, legend {
+    background-color: white;
+    border-width: 2px 2px 0 2px;
+    border-color: black;
+    border-style: solid;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  legend {
+    width: 100%;
+    border-top: 0;
+  }
+
   .wiki-globe {
     display: none;
   }

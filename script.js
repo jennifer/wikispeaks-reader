@@ -21,13 +21,14 @@ function getDataFromWikiApi(inputURL) {
 }
 
 function renderTitle(articleTitle) {
-  $('#article-title').text(`${articleTitle}`);
+  $('.title-wrapper').html(`
+    <h2 id='article-title'>${articleTitle}</h2>
+    `);
 }
 
 function renderImage(pageImg, articleTitle) {
-  $('#image-content').html(`
+  $('.image-wrapper').append(`
     <img src='${pageImg}' class='pageImg' alt='Photo of ${articleTitle}'>
-    <div class='image-shadow'></div>
   `);
 }
 
@@ -140,16 +141,14 @@ function getAudioFromPollyAPI (pollyText) {
 }
 
 //Handle submit search
-function submitSearch() {
-  $('.search-form').submit(event => {
+let submitFunc = function submitSearch() {
     event.preventDefault();
-
     // Clear previous inputs
     $('.error-message').empty();
     $('.contents-links').empty();
     $('.content-buttons').empty();
+    $('.image-wrapper').empty();
     $('#article-title').empty();
-    $('#image-content').empty();
     pollyText = '';
     getAudioFromPollyAPI(pollyText);
     let inputURL = ``;
@@ -166,8 +165,10 @@ function submitSearch() {
       queryTarget.val('');
       getDataFromWikiApi(inputURL);
     }
-  });
-}
+  }
+
+$('.search-form').submit(submitFunc);
+$('#random').click(submitFunc);
 
 // Get normalized term from redirect page
 function getTermFromReditect(redirectURL) {
@@ -179,7 +180,7 @@ function getTermFromReditect(redirectURL) {
 
       // Handle input errors
       if (page == -1) {
-        $('.error-message').html('<p class="error">Not found! Check spelling and search again</p>');
+        $('.error-message').html('<p class="error">Not found. Check spelling and search again</p>');
         return;
       }
       else {
@@ -191,5 +192,3 @@ function getTermFromReditect(redirectURL) {
     };
   $.ajax(query);
 }
-
-$(submitSearch);
