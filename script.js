@@ -1,4 +1,3 @@
-//Call Wikipedia api to get JSON (input else random)
 function getDataFromWikiApi(inputURL) {
   const query = { 
     url: inputURL,
@@ -32,7 +31,7 @@ function renderImage(pageImg, articleTitle) {
   `);
 }
 
-// Get HTML string
+// Get HTML string for parsing
 function renderJSON(extractStr) {
   $('#string').html(`
     <p>${extractStr}</p>
@@ -40,7 +39,6 @@ function renderJSON(extractStr) {
   pushTextHeadings(extractStr);
 }
 
-// Add headings to an array
 let headersArr = [];
 let headersArrLg = 0;
 function pushTextHeadings(extractStr) {
@@ -49,8 +47,6 @@ function pushTextHeadings(extractStr) {
   for (let i = 0; i < headers.length; i++) {
     headersArr.push(headers[i].textContent);
   };
-
-  //Remove unwanted array values
   let removeHeadersArr = ['See also', 'Notes', 'References', 'External links', 'Further reading', 'Footnotes', 'Notes and references', 'Maps'];
   removeHeadersArr.forEach((item, index) => {
     let index2 = headersArr.indexOf(removeHeadersArr[index]);
@@ -64,9 +60,7 @@ function pushTextHeadings(extractStr) {
   renderHeaderLinks(headersArr);
 }
 
-// Render heading array as links
 function renderHeaderLinks(headersArr) {
-  // Render form
   $('.content-buttons').append(`
     <form class='contents-form'>
       <fieldset class='contents-links'>
@@ -75,7 +69,6 @@ function renderHeaderLinks(headersArr) {
     </form>
     `);
 
-  // Render buttons
   headersArr.forEach((item, index) => {
     $('.contents-links').append(`
       <button class='header-button' data='${index}'>${item}</button>
@@ -95,13 +88,11 @@ function parseTextArr(extractStr) {
     plainTextArr.forEach((item, index, array) => {
     array[index] = array[index].split('.').slice(0, -1).join('.');
   });
-  
-  //Remove unwanted array values
-  let removeText = plainTextArr.length - headersArrLg;
-  plainTextArr.splice(-`${removeText}`, removeText, '');
+    let removeText = plainTextArr.length - headersArrLg;
+    plainTextArr.splice(-`${removeText}`, removeText, '');
 }
 
-// Pass string to Polly on click
+// Pass parsed string to Polly
 function handleHeaderClick() {
   $('.contents-links').on('click', '.header-button', event => {
     event.preventDefault();
@@ -111,7 +102,6 @@ function handleHeaderClick() {
   });
 }
 
-//Submit parsed content to Polly API
 function getAudioFromPollyAPI (pollyText) {
   AWS.config.accessKeyId = config.MY_KEY;
   AWS.config.secretAccessKey = config.SECRET_KEY;
@@ -140,10 +130,8 @@ function getAudioFromPollyAPI (pollyText) {
   });
 }
 
-//Handle submit search
 let submitFunc = function submitSearch() {
     event.preventDefault();
-    // Clear previous inputs
     $('.error-message').empty();
     $('.contents-links').empty();
     $('.content-buttons').empty();
@@ -177,8 +165,6 @@ function getTermFromReditect(redirectURL) {
     dataType: "JSONP",
     success: function(data) {
       let page = Object.keys(data.query.pages)[0];
-
-      // Handle input errors
       if (page == -1) {
         $('.error-message').html('<p class="error">Not found. Check spelling and search again</p>');
         return;
