@@ -20,7 +20,7 @@ Two-column results (tablet)
 ![Search results with article buttons and photo on tablet](https://i.imgur.com/To1Jvyw.png)
 
 Single-column results (mobile)
-![Search results with article photo on mobile](https://i.imgur.com/UWf3VMK.png)
+![Search results with article photo on mobile](https://i.imgur.com/Ba25Mrg.png)
 ![Search results with article buttons on mobile](https://i.imgur.com/EB3gPb6.png)
 
 ## Built With
