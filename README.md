@@ -1,6 +1,6 @@
 # WikispeakS
 
-A text-to-speech AI service for the casual searcher. Users can search for articles on Wikipedia, select topics, and listen to content read aloud by Kimberly, Wikispeaks' AI assitant. A random article generator enables users to listen and learn about people, places, and things selected at random from the vast Wiki encyclopedia. 
+A text-to-speech AI service for the casual searcher. Users can search for articles on Wikipedia, select topics, and listen to content read aloud by Kimberly, Wikispeaks' AI assistant. A random article generator enables users to listen and learn about people, places, and things selected at random from the vast Wiki encyclopedia. 
 
 ## Getting Started
 
