@@ -1,6 +1,6 @@
 # WikispeakS
 
-A text-to-speech AI service for the Wikipedia searcher. Users can search for articles, select topics, and listen to content read aloud by AI assistant Kimberly. A random article generator enables users to listen and learn about people, places, and things selected at random from the vast Wiki encyclopedia. 
+A text-to-speech AI service for the casual searcher. Users can search for articles on Wikipedia, select topics, and listen to content read aloud by Kimberly, Wikispeaks' AI assitant. A random article generator enables users to listen and learn about people, places, and things selected at random from the vast Wiki encyclopedia. 
 
 ## Getting Started
 
@@ -11,21 +11,17 @@ A text-to-speech AI service for the Wikipedia searcher. Users can search for art
 ### Screenshots
 
 Initial screen
-
-![Search bar and Wiki globe on desktop](https://i.imgur.com/MBuXrxB.png?1)
+![Search bar and Wiki globe on desktop|50%](https://i.imgur.com/NAXhDA1.png)
 
 Three-column results (desktop)
-
-![Search results with article buttons and photo on desktop](https://i.imgur.com/Qw1ljy5.png?1)
+![Search results with article buttons and photo on desktop|50%](https://i.imgur.com/QmAGZhq.png)
 
 Two-column results (tablet)
-
-![Search results with article buttons and photo on tablet](https://i.imgur.com/To1Jvyw.png?1)
+![Search results with article buttons and photo on tablet|50%](https://i.imgur.com/vI4T7uR.png)
 
 Single-column results (mobile)
-
-![Search results with article photo on mobile](https://i.imgur.com/Ba25Mrg.png?1)
-![Search results with article buttons on mobile](https://i.imgur.com/EB3gPb6.png?1)
+![Search results with article photo on mobile|50%](https://i.imgur.com/M4iegju.png)
+![Search results with article buttons on mobile|50%](https://i.imgur.com/q06lEaG.png)
 
 ## Built With
 
