@@ -17,7 +17,7 @@ Three-column results (desktop)
 ![Search results with article buttons and photo on desktop|500px](https://i.imgur.com/QmAGZhq.png)
 
 Two-column results (tablet)
-![Search results with article buttons and photo on tablet|300px](https://i.imgur.com/vI4T7uR.png)
+![Search results with article buttons and photo on tablet|300px](https://i.imgur.com/vI4T7uR.png =100x)
 
 Single-column results (mobile)
 ![Search results with article photo on mobile|150px](https://i.imgur.com/M4iegju.png)
